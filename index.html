@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TARO AI – agenci AI i automatyzacja procesów dla firm</title>
+<meta name="description" content="TARO AI wdraża agentów AI i automatyzacje procesów w firmach. Audyt AI w 3 dni, wdrożenie w 30 dni.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: single deliberate dark "neon loop" world from logo E — deep navy, cyan→blue glow; the loop symbol marks the automation flow. */
+:root{
+  --bg:#060D1C; --deep:#03070F; --surface:#0B1630; --ink:#F2F6FF; --muted:#9FB3D1; --line:#1E3560;
+  --leaf:#5CF2FF; --c2:#2B5BFF; --leaf-ink:#5CF2FF; --leaf-soft:#0C2246; --on-leaf:#03070F; --err:#FF6B7A;
+  --glow:0 0 24px rgba(70,190,255,.35);
+  --f-display:'Sora', system-ui, sans-serif;
+  --f-body:'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-mono:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6}
+.hero{background:radial-gradient(ellipse 70% 70% at 70% 30%, #0C2246 0%, var(--bg) 70%)}
+.grad{background:linear-gradient(135deg,var(--leaf),var(--c2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+h1,h2,h3{font-family:var(--f-display);letter-spacing:-0.03em;line-height:1.1;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,5.2vw,3.9rem);font-weight:800}
+h2{font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:700}
+h3{font-size:1.2rem;font-weight:600;letter-spacing:-0.01em}
+p{margin:0}
+a{color:var(--leaf-ink)}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--leaf-ink)}
+section{padding-block:clamp(56px,8vw,96px)}
+.lead{color:var(--muted);font-size:1.15rem;max-width:58ch}
+
+/* nav */
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:20px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.brand b{font-family:var(--f-display);font-weight:700;font-size:1.35rem;letter-spacing:-0.04em}
+.brand b,.brand span{font-weight:800;letter-spacing:.02em}
+.brand span{font-family:var(--f-display);font-size:1.35rem;background:linear-gradient(135deg,var(--leaf),var(--c2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-display);font-weight:600;font-size:1rem;padding:14px 22px;border-radius:999px;border:0;cursor:pointer;text-decoration:none;background:linear-gradient(135deg,var(--leaf),var(--c2));color:var(--on-leaf);box-shadow:var(--glow);transition:transform .15s ease, box-shadow .15s}
+.btn:hover{box-shadow:0 0 36px rgba(70,190,255,.55)}
+.btn:hover{transform:translateY(-1px)}
+.btn:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--leaf);outline-offset:3px}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);box-shadow:none}
+.nav .btn{padding:10px 18px;font-size:.92rem}
+
+/* hero */
+.hero{padding-block:clamp(32px,6vw,72px) clamp(56px,8vw,96px)}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(32px,5vw,64px);align-items:center}
+.hero-grid>*{min-width:0}
+.hero p.lead{margin-top:22px}
+.hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.hero small{display:block;margin-top:14px;color:var(--muted);font-size:.9rem}
+
+/* flow panel: routine in, agent, result out */
+.flow{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:24px;display:grid;gap:14px;font-family:var(--f-mono);font-size:.82rem}
+.flow-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:var(--bg);border:1px solid var(--line)}
+.flow-row .t{flex:1;min-width:0}
+.flow-row .st{font-size:.72rem;padding:3px 9px;border-radius:999px;background:var(--leaf-soft);color:var(--leaf-ink);white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--leaf);flex:none}
+.agent{display:flex;align-items:center;gap:14px;padding:16px;border-radius:14px;background:var(--leaf-soft);border:1px solid var(--leaf);box-shadow:var(--glow);color:var(--ink);font-family:var(--f-display);font-weight:600}
+.agent svg{flex:none}
+.flow .cap{color:var(--muted);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+@media (prefers-reduced-motion: no-preference){
+  .flow-row .dot{animation:pulse 2.4s ease-in-out infinite}
+  .flow-row:nth-child(3) .dot{animation-delay:.8s}
+  .flow-row:nth-child(4) .dot{animation-delay:1.6s}
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+
+/* pains */
+.pains{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.pain{padding:24px;border-top:3px solid var(--leaf);background:var(--surface);border-radius:0 0 16px 16px}
+.pain h3{margin-bottom:10px}
+.pain p{color:var(--muted)}
+
+/* proof */
+.proof{background:var(--deep);color:var(--ink);border-block:1px solid var(--line)}
+.proof .eyebrow{color:var(--leaf)}
+.proof .lead{color:var(--muted)}
+.proof-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,64px);align-items:start}
+.proof-grid>*{min-width:0}
+.proof ul{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.proof li{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:18px 0;border-bottom:1px solid var(--line)}
+.proof li:first-child{padding-top:0}
+.proof li b{font-family:var(--f-display);font-weight:600;display:block;margin-bottom:4px}
+.proof li span{color:var(--muted);font-size:.95rem}
+.proof li svg{margin-top:4px}
+
+/* offer */
+.offers{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px}
+.offer{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:30px;display:flex;flex-direction:column;gap:16px}
+.offer.main{border:2px solid var(--leaf);box-shadow:var(--glow)}
+.offer .price{font-family:var(--f-display);font-weight:700;font-size:2rem;letter-spacing:-0.03em;font-variant-numeric:tabular-nums}
+.offer .price small{font-family:var(--f-body);font-weight:400;font-size:.95rem;color:var(--muted);letter-spacing:0}
+.offer .meta{font-family:var(--f-mono);font-size:.78rem;color:var(--leaf-ink);letter-spacing:.06em;text-transform:uppercase}
+.offer ul{margin:0;padding-left:20px;color:var(--muted);display:grid;gap:6px}
+.offer .btn{align-self:flex-start;margin-top:auto}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:40px;counter-reset:s}
+.step{counter-increment:s;padding-top:18px;border-top:1px solid var(--line)}
+.step::before{content:counter(s,decimal-leading-zero);font-family:var(--f-mono);color:var(--leaf-ink);font-size:.85rem;display:block;margin-bottom:10px}
+.step p{color:var(--muted);margin-top:8px;font-size:.96rem}
+
+/* faq */
+.faq{max-width:760px;margin-top:32px;display:grid;gap:0}
+details{border-bottom:1px solid var(--line);padding-block:18px}
+summary{cursor:pointer;font-family:var(--f-display);font-weight:600;font-size:1.08rem;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--leaf-ink);font-weight:400}
+details[open] summary::after{content:"−"}
+details p{color:var(--muted);margin-top:10px}
+
+/* contact */
+.contact{background:var(--leaf-soft)}
+.contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(32px,5vw,64px);align-items:start}
+.contact-grid>*{min-width:0}
+form{background:var(--surface);border-radius:20px;padding:28px;display:grid;gap:16px;border:1px solid var(--line)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+label{display:grid;gap:6px;font-size:.88rem;font-weight:500}
+input,textarea,select{font:inherit;font-size:1rem;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
+textarea{min-height:110px;resize:vertical}
+.fine{font-size:.8rem;color:var(--muted)}
+.ok{padding:20px;border-radius:14px;background:var(--leaf-soft);color:var(--leaf-ink);font-weight:500}
+
+footer{padding-block:32px;color:var(--muted);font-size:.88rem}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+
+@media (max-width:860px){
+  .hero-grid,.proof-grid,.contact-grid,.offers{grid-template-columns:1fr}
+  .pains{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr}
+}
+@media (max-width:480px){
+  .steps,.row2{grid-template-columns:1fr}
+  .nav .btn{display:none}
+}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="loopG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5CF2FF"/><stop offset="1" stop-color="#2B5BFF"/></linearGradient>
+    <radialGradient id="loopCore" cx="0.4" cy="0.35" r="0.7"><stop offset="0" stop-color="#FFFFFF"/><stop offset="0.45" stop-color="#5CF2FF"/><stop offset="1" stop-color="#2B5BFF"/></radialGradient>
+    <symbol id="leaf" viewBox="0 0 100 100">
+      <path d="M85 36 A37 37 0 1 0 86.5 60" fill="none" stroke="url(#loopG)" stroke-width="13" stroke-linecap="round"/>
+      <path d="M73 22 L87.5 35.5 L69 42" fill="none" stroke="url(#loopG)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="50" cy="50" r="12" fill="url(#loopCore)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="wrap nav">
+  <a class="brand" href="#top" aria-label="TARO AI">
+    <svg width="34" height="34" style="color:var(--leaf);--leaf-vein:var(--bg)"><use href="#leaf"/></svg>
+    <b>TARO</b><span>AI</span>
+  </a>
+  <a class="btn" href="#kontakt">Umów rozmowę</a>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Agenci AI i automatyzacja procesów</p>
+        <h1 style="margin-top:14px">Twój zespół przepisuje dane między systemami. <span class="grad">Agent AI zrobi to za niego.</span></h1>
+        <p class="lead">Projektujemy i wdrażamy automatyzacje, które przejmują powtarzalną pracę w obsłudze klienta, sprzedaży i administracji. Zaczynamy od jednego procesu i pokazujemy efekt w 30 dni.</p>
+        <div class="cta">
+          <a class="btn" href="#kontakt">Umów bezpłatną rozmowę</a>
+          <a class="btn ghost" href="#oferta">Zobacz ofertę i ceny</a>
+        </div>
+        <small>20 minut, online. Powiemy wprost, czy w Twojej firmie AI się opłaca.</small>
+      </div>
+      <div class="flow" aria-label="Przykład: zadania trafiają do agenta AI, który zwraca gotowy wynik">
+        <span class="cap">Dziś, ręcznie</span>
+        <div class="flow-row"><span class="dot"></span><span class="t">Zapytanie z maila → przepisz do CRM</span><span class="st">auto</span></div>
+        <div class="flow-row"><span class="dot"></span><span class="t">Sprzedaż z kas → arkusz → raport</span><span class="st">auto</span></div>
+        <div class="flow-row"><span class="dot"></span><span class="t">Godziny pracy → zestawienie do płac</span><span class="st">auto</span></div>
+        <div class="agent">
+          <svg width="30" height="30" style="color:var(--on-leaf);--leaf-vein:var(--leaf)"><use href="#leaf"/></svg>
+          Agent TARO AI wykonuje to sam, a Ty dostajesz gotowy wynik
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow">Gdzie firmy tracą czas</p>
+      <h2 style="margin-top:12px;max-width:22ch">Rutyna, której nikt nie lubi, a którą ktoś robi codziennie</h2>
+      <div class="pains">
+        <div class="pain"><h3>Obsługa klienta</h3><p>Te same pytania w mailach i telefonach. Agent odpowiada od razu, umawia termin i przekazuje człowiekowi tylko trudne sprawy.</p></div>
+        <div class="pain"><h3>Sprzedaż</h3><p>Leady giną w skrzynce, oferty powstają ręcznie. Automatyzacja zapisuje każde zapytanie w CRM i przypomina o kolejnym kroku.</p></div>
+        <div class="pain"><h3>Administracja i raporty</h3><p>Dane z kilku systemów sklejane w Excelu. Integracja robi raport sama, codziennie, bez błędów przepisywania.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="proof">
+    <div class="wrap proof-grid">
+      <div>
+        <p class="eyebrow">Przykładowe wdrożenia</p>
+        <h2 style="margin-top:12px">Co możemy zautomatyzować w Twojej branży</h2>
+        <p class="lead" style="margin-top:18px">Poniżej typowe scenariusze, od których zaczynamy rozmowę. Na audycie liczymy, który z nich w Twojej firmie da największy zwrot.</p>
+      </div>
+      <ul>
+        <li><svg width="22" height="22" style="color:var(--leaf);--leaf-vein:var(--ink)"><use href="#leaf"/></svg><div><b>Hurtownia i e-commerce</b><span>Zamówienia z maili i PDF-ów trafiają same do systemu magazynowego. Agent odpowiada klientom o status przesyłki i dostępność towaru.</span></div></li>
+        <li><svg width="22" height="22" style="color:var(--leaf);--leaf-vein:var(--ink)"><use href="#leaf"/></svg><div><b>Biuro rachunkowe</b><span>Faktury i dokumenty od klientów są odczytywane, opisywane i sortowane automatycznie. Agent przypomina klientom o brakujących dokumentach przed terminem.</span></div></li>
+        <li><svg width="22" height="22" style="color:var(--leaf);--leaf-vein:var(--ink)"><use href="#leaf"/></svg><div><b>Transport i spedycja</b><span>Zlecenia z giełd i maili zamieniają się w gotowe karty w systemie. Klient dostaje automatyczne powiadomienia, a dokumenty przewozowe trafiają do faktury bez przepisywania.</span></div></li>
+        <li><svg width="22" height="22" style="color:var(--leaf);--leaf-vein:var(--ink)"><use href="#leaf"/></svg><div><b>Kliniki i gabinety (nasz produkt)</b><span>Głosowy recepcjonista AI odbiera telefony, odpowiada na pytania pacjentów i umawia wizyty w kalendarzu, także po godzinach pracy recepcji.</span></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="oferta">
+    <div class="wrap">
+      <p class="eyebrow">Oferta</p>
+      <h2 style="margin-top:12px">Dwa jasne pakiety, cena znana z góry</h2>
+      <div class="offers">
+        <div class="offer">
+          <span class="meta">3 dni robocze</span>
+          <h3>Audyt AI</h3>
+          <div class="price">od 3 000 zł <small>netto</small></div>
+          <ul>
+            <li>Przegląd procesów w Twojej firmie</li>
+            <li>Mapa: co zautomatyzować i ile godzin to oszczędzi</li>
+            <li>Lista 3 wdrożeń z kosztem i czasem zwrotu</li>
+          </ul>
+          <a class="btn ghost" href="#kontakt">Zamów audyt</a>
+        </div>
+        <div class="offer main">
+          <span class="meta">30 dni</span>
+          <h3>Wdrożenie jednego procesu</h3>
+          <div class="price">od 10 000 zł <small>netto</small></div>
+          <ul>
+            <li>Agent AI lub automatyzacja dla jednego procesu</li>
+            <li>Integracja z systemami, których już używasz</li>
+            <li>Szkolenie zespołu i 30 dni opieki po starcie</li>
+          </ul>
+          <a class="btn" href="#kontakt">Porozmawiajmy o wdrożeniu</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow">Jak pracujemy</p>
+      <h2 style="margin-top:12px">Od rozmowy do działającej automatyzacji</h2>
+      <div class="steps">
+        <div class="step"><h3>Rozmowa</h3><p>20 minut. Opowiadasz, co zabiera najwięcej czasu.</p></div>
+        <div class="step"><h3>Audyt</h3><p>Liczymy, gdzie AI daje zwrot, a gdzie się nie opłaca.</p></div>
+        <div class="step"><h3>Wdrożenie</h3><p>Budujemy, testujemy na Twoich danych, uruchamiamy.</p></div>
+        <div class="step"><h3>Opieka</h3><p>Pilnujemy działania i rozwijamy kolejne procesy.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow">Pytania</p>
+      <h2 style="margin-top:12px">Zanim napiszesz</h2>
+      <div class="faq">
+        <details><summary>Czy to ma sens w małej firmie?</summary><p>Tak, jeśli ktoś w firmie spędza kilka godzin tygodniowo na powtarzalnej pracy z danymi. Na audycie liczymy to wprost. Jeśli zwrotu nie ma, mówimy to od razu.</p></details>
+        <details><summary>Czy musimy zmieniać systemy?</summary><p>Nie. Łączymy się z tym, czego już używacie: poczta, CRM, arkusze, system kasowy czy księgowy.</p></details>
+        <details><summary>Co z bezpieczeństwem danych?</summary><p>Dane zostają w Twoich systemach, a automatyzacja dostaje tylko te dostępy, które są jej potrzebne. Zakres dostępów ustalamy na piśmie przed startem.</p></details>
+        <details><summary>Kto za tym stoi?</summary><p>Zespół z wieloletnim doświadczeniem w budowie oprogramowania dla firm. Za wdrożenia odpowiada Arkadiusz Martyna.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="kontakt">
+    <div class="wrap contact-grid">
+      <div>
+        <p class="eyebrow">Kontakt</p>
+        <h2 style="margin-top:12px">Umów bezpłatną rozmowę</h2>
+        <p class="lead" style="margin-top:18px">Napisz w dwóch zdaniach, co chcesz odciążyć. Odezwiemy się w ciągu jednego dnia roboczego z propozycją terminu.</p>
+      </div>
+      <form id="lead-form" novalidate>
+        <div class="row2">
+          <label for="f-name">Imię i nazwisko<input id="f-name" name="name" autocomplete="name" required></label>
+          <label for="f-company">Firma<input id="f-company" name="company" autocomplete="organization" required></label>
+        </div>
+        <div class="row2">
+          <label for="f-email">E-mail<input id="f-email" name="email" type="email" autocomplete="email" required></label>
+          <label for="f-phone">Telefon<input id="f-phone" name="phone" type="tel" autocomplete="tel"></label>
+        </div>
+        <label for="f-area">Obszar<select id="f-area" name="area">
+          <option>Obsługa klienta</option><option>Sprzedaż</option><option>Administracja i raporty</option><option>Jeszcze nie wiem</option>
+        </select></label>
+        <label for="f-msg">Co zabiera Wam najwięcej czasu?<textarea id="f-msg" name="message" placeholder="Np. ręcznie przepisujemy zamówienia z maili do systemu, ok. 2 godziny dziennie."></textarea></label>
+        <button class="btn" type="submit" id="f-submit">Wyślij i umów rozmowę</button>
+        <p class="fine">Wysyłając formularz, zgadzasz się na kontakt w sprawie zapytania. Szczegóły w <a href="polityka-prywatnosci.html">polityce prywatności</a>.</p>
+        <p class="ok" id="f-ok" hidden>Dziękujemy. Odezwiemy się w ciągu jednego dnia roboczego.</p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>TARO AI · <a href="polityka-prywatnosci.html">Polityka prywatności</a></span>
+    <span>Mniej rutyny. Więcej możliwości.</span>
+  </div>
+</footer>
+
+<script>
+document.getElementById('lead-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  var f = e.target, ok = true;
+  ['f-name','f-company','f-email'].forEach(function(id){
+    var el = document.getElementById(id);
+    var bad = !el.value.trim() || (el.type === 'email' && !/^\S+@\S+\.\S+$/.test(el.value));
+    el.style.borderColor = bad ? 'var(--err)' : '';
+    if (bad) ok = false;
+  });
+  if (!ok) return;
+  document.getElementById('f-submit').hidden = true;
+  document.getElementById('f-ok').hidden = false;
+});
+</script>
+
+</body>
+</html>
